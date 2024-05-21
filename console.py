@@ -105,6 +105,16 @@ class HBNBCommand(cmd.Cmd):
                 obj_list.append(str(obj))
         print(obj_list)
 
+    def default(self, line):
+        """Handle <class name>.all() commands"""
+        args = line.split('.')
+        if len(args) == 2:
+            class_name, command = args
+            if command == "all()":
+                self.do_all(class_name)
+                return
+        print(f"*** Unknown syntax: {line}")
+
     def do_update(self, arg):
         """Updates an instance based on the class name and id by adding or updating attribute"""
         args = arg.split()
