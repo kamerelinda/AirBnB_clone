@@ -6,10 +6,19 @@ from datetime import datetime
 
 
 class BaseModel:
-    def __init__(self):
-        self.id = str(uuid.uuid4())  # Generate a unique ID
-        self.created_at = datetime.now()  # Set created_at to current datetime
-        self.updated_at = datetime.now()  # Set updated_at initially to created_at
+    def __init__(self, *args, **kwargs):
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == '__class__':
+                    continue
+                if key in ('created_at', 'updated_at'):
+                    value = datetime.fromisoformat(value)
+                setattr(self, key, value)
+
+        else:
+            self.id = str(uuid.uuid4())  # Generate a unique ID
+            self.created_at = datetime.now()  # Set created_at to current datetime
+            self.updated_at = datetime.now()  # Set updated_at initially to created_at
 
     def __str__(self):
         # [<class name>] (<self.id>) <self.__dict__>
