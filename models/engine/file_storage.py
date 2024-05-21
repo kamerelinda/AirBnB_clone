@@ -5,6 +5,11 @@ import json
 import os
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.amenity import Amenity
 
 
 class FileStorage:
@@ -41,5 +46,15 @@ class FileStorage:
                     cls_name = obj_data['__class__']
                     if cls_name == "BaseModel":
                         FileStorage.__objects[key] = BaseModel(**obj_data)
-                    if cls_name == "User":
+                    elif cls_name == "User":
                         FileStorage.__objects[key] = User(**obj_data)
+                    elif cls_name == "State":
+                        FileStorage.__objects[key] = State(**obj_data)
+                    elif cls_name == "City":
+                        FileStorage.__objects[key] = City(**obj_data)
+                    elif cls_name == "Place":
+                        FileStorage.__objects[key] = Place(**obj_data)
+                    elif cls_name == "Review":
+                        FileStorage.__objects[key] = Review(**obj_data)
+                    elif cls_name == "Amenity":
+                        FileStorage.__objects[key] = Amenity(**obj_data)
