@@ -2,8 +2,6 @@
 # contains the entry point of the command interpreter:
 
 import cmd
-import json
-from models.base_model import BaseModel
 from models import storage
 
 
@@ -99,6 +97,53 @@ class HBNBCommand(cmd.Cmd):
             for obj in storage.all().values():
                 obj_list.append(str(obj))
         print(obj_list)
+
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id by adding or updating attribute"""
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        class_name, obj_id, attr_name, attr_value = args[0], args[1], args[2], args[3]
+
+        if class_name not in globals():
+            print("** class doesn't exist **")
+            return
+
+        key = f"{class_name}.{obj_id}"
+        obj = storage.all().get(key)
+        if obj is None:
+            print("** no instance found **")
+            return
+
+        # Attempt to cast the value to the correct type
+        try:
+            attr_type = type(getattr(obj, attr_name))
+            if attr_type == int:
+                attr_value = int(attr_value)
+            elif attr_type == float:
+                attr_value = float(attr_value)
+            else:
+                attr_value = str(attr_value)
+        except AttributeError:
+            print("** attribute doesn't exist **")
+            return
+        except ValueError:
+            print("** value type mismatch **")
+            return
+
+        setattr(obj, attr_name, attr_value)
+        obj.save()
 
 
 if __name__ == '__main__':
