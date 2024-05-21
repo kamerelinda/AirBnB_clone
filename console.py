@@ -105,16 +105,6 @@ class HBNBCommand(cmd.Cmd):
                 obj_list.append(str(obj))
         print(obj_list)
 
-    def default(self, line):
-        """Handle <class name>.all() commands"""
-        args = line.split('.')
-        if len(args) == 2:
-            class_name, command = args
-            if command == "all()":
-                self.do_all(class_name)
-                return
-        print(f"*** Unknown syntax: {line}")
-
     def do_update(self, arg):
         """Updates an instance based on the class name and id by adding or updating attribute"""
         args = arg.split()
@@ -161,6 +151,50 @@ class HBNBCommand(cmd.Cmd):
 
         setattr(obj, attr_name, attr_value)
         obj.save()
+
+    def do_count(self, arg):
+        """Counts the number of instances of a class"""
+        args = arg.split()
+        if not args:
+            print("** class name missing **")
+            return
+
+        class_name = args[0]
+        if class_name not in globals():
+            print("** class doesn't exist **")
+            return
+
+        count = sum(1 for key in storage.all() if key.startswith(class_name))
+        print(count)
+
+    def default(self, line):
+        """Handle <class name>.all() commands"""
+        args = line.split('.')
+        if len(args) == 2:
+            class_name, command = args
+            if command == "all()":
+                self.do_all(class_name)
+                return
+            elif command == "count()":
+                self.do_count(class_name)
+                return
+            elif command.startswith("show(") and command.endswith(")"):
+                obj_id = command[5:-1].strip('"')
+                self.do_show(f"{class_name} {obj_id}")
+                return
+            elif command.startswith("destroy(") and command.endswith(")"):
+                obj_id = command[8:-1].strip('"')
+                self.do_destroy(f"{class_name} {obj_id}")
+                return
+            elif command.startswith("update(") and command.endswith(")"):
+                params = command[7:-1].split(", ")
+                if len(params) == 3:
+                    obj_id = params[0].strip('"')
+                    attr_name = params[1].strip('"')
+                    attr_value = params[2].strip('"')
+                    self.do_update(f"{class_name} {obj_id} {attr_name} {attr_value}")
+                    return
+        print(f"*** Unknown syntax: {line}")
 
 
 if __name__ == '__main__':
