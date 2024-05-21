@@ -18,8 +18,10 @@ class BaseModel:
 
         else:
             self.id = str(uuid.uuid4())  # Generate a unique ID
-            self.created_at = datetime.now()  # Set created_at to current datetime
-            self.updated_at = datetime.now()  # Set updated_at initially to created_at
+            # Set created_at to current datetime
+            self.created_at = datetime.now()
+            # Set updated_at initially to created_at
+            self.updated_at = datetime.now()
             from models import storage
             storage.new(self)  # add to storage
 
@@ -28,7 +30,8 @@ class BaseModel:
         return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
-        # updates the public instance attribute updated_at with the current datetime
+        # updates the public instance attribute
+        # updated_at with the current datetime
         self.updated_at = datetime.now()
         from models import storage
         storage.save()  # save to storage

@@ -37,7 +37,8 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("create BaseModel")
             self.console.onecmd("show BaseModel")
             output = f.getvalue().strip()
-            self.assertTrue("BaseModel" in output)  # Check if the output contains BaseModel
+            # Check if the output contains BaseModel
+            self.assertTrue("BaseModel" in output)
 
     def test_destroy(self):
         """Test destroy command"""
@@ -46,7 +47,8 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("destroy BaseModel")
             self.console.onecmd("show BaseModel")
             output = f.getvalue().strip()
-            self.assertTrue("** no instance found **" in output)  # Check if no instance is found after destroy
+            # Check if no instance is found after destroy
+            self.assertTrue("** no instance found **" in output)
 
     def test_all(self):
         """Test all command"""
@@ -54,7 +56,8 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("create BaseModel")
             self.console.onecmd("all")
             output = f.getvalue().strip()
-            self.assertTrue("BaseModel" in output)  # Check if BaseModel instance is present in all output
+            # Check if BaseModel instance is present in all output
+            self.assertTrue("BaseModel" in output)
 
     def test_count(self):
         """Test count command"""
@@ -62,16 +65,19 @@ class TestConsole(unittest.TestCase):
             self.console.onecmd("create BaseModel")
             self.console.onecmd("count BaseModel")
             output = f.getvalue().strip()
-            self.assertEqual(output, "1")  # Check if count is 1 after creating an instance
+            # Check if count is 1 after creating an instance
+            self.assertEqual(output, "1")
 
     def test_update(self):
         """Test update command"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd("create BaseModel")
-            self.console.onecmd("update BaseModel 1234-1234-1234 email 'test@example.com'")
+            self.console.onecmd("update BaseModel 1234-1234-1234 "
+                                "email 'test@example.com'")
             self.console.onecmd("show BaseModel")
             output = f.getvalue().strip()
-            self.assertTrue("'email': 'test@example.com'" in output)  # Check if email is updated
+            # Check if email is updated
+            self.assertTrue("'email': 'test@example.com'" in output)
 
     def test_all_with_class_name(self):
         """Test all command with class name"""
@@ -89,7 +95,9 @@ class TestConsole(unittest.TestCase):
         """Test update command with dictionary representation"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd("create BaseModel")
-            self.console.onecmd("update BaseModel 1234-1234-1234 {'email': 'test@example.com', 'name': 'test'}")
+            self.console.onecmd("update BaseModel 1234-1234-1234 "
+                                "{'email': 'test@example.com', "
+                                "'name': 'test'}")
             self.console.onecmd("show BaseModel")
             output = f.getvalue().strip()
             self.assertTrue("'email': 'test@example.com'" in output)
@@ -98,14 +106,16 @@ class TestConsole(unittest.TestCase):
     def test_show_invalid_id(self):
         """Test show command with invalid ID"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("show BaseModel 1234")  # Assuming 1234 is an invalid ID
+            # Assuming 1234 is an invalid ID
+            self.console.onecmd("show BaseModel 1234")
             output = f.getvalue().strip()
             self.assertTrue("** no instance found **" in output)
 
     def test_destroy_invalid_id(self):
         """Test destroy command with invalid ID"""
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("destroy BaseModel 1234")  # Assuming 1234 is an invalid ID
+            # Assuming 1234 is an invalid ID
+            self.console.onecmd("destroy BaseModel 1234")
             output = f.getvalue().strip()
             self.assertTrue("** no instance found **" in output)
 

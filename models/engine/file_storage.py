@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# This script has class FileStorage that serializes instances to a JSON file and deserializes JSON file to instances:
+# This script has class FileStorage that
+# serializes instances to a JSON file and
+# deserializes JSON file to instances:
 
 import json
 import os
@@ -32,7 +34,8 @@ class FileStorage:
     @staticmethod
     def save():
         """serializes __objects to the JSON file (path: __file_path)"""
-        obj_dict = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
+        obj_dict = {key: obj.to_dict()
+                    for key, obj in FileStorage.__objects.items()}
         with open(FileStorage.__file_path, 'w') as file:
             json.dump(obj_dict, file)
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-# This script has class Place that inherits from BaseModel and defines places:
+# This script has class Place that inherits from BaseModel
+# and defines places:
 
 from models.base_model import BaseModel
 
