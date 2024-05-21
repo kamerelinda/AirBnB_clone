@@ -4,6 +4,7 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -37,6 +38,8 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as file:
                 obj_dict = json.load(file)
                 for key, obj_data in obj_dict.items():
-                    cls_name, obj_id = key.split('.')
+                    cls_name = obj_data['__class__']
                     if cls_name == "BaseModel":
                         FileStorage.__objects[key] = BaseModel(**obj_data)
+                    if cls_name == "User":
+                        FileStorage.__objects[key] = User(**obj_data)
